@@ -9,8 +9,7 @@ import { execa } from 'execa'
 // eslint-disable-next-line no-console
 const log = console.log
 
-// BUG: For some reason adding more files break GitHub actions. Workflow just hangs.
-const fileCount = 2
+const fileCount = 10
 
 // To not polute the repo with a lot of tests, copy basic tests multiple times
 function copyTestFiles() {
