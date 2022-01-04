@@ -47,7 +47,9 @@ export type Result = Benchmark.Stats & {
 }
 
 export function runBench(callback: (data: Result[]) => void) {
-  const bench = new Benchmark.Suite()
+  const bench = new Benchmark.Suite(undefined, {
+    initCount: 3,
+  })
 
   bench.on('cycle', (event: Event) => {
     const benchmark = event.target
