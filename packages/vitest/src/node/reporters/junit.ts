@@ -8,18 +8,15 @@ import { parseStacktrace } from '../../utils/source-map'
 import { F_POINTER } from './renderers/figures'
 import { IndentedLogger } from './utils/indented-logger'
 
-function flattenTasks(task: Task, baseName = ''): Task[] {
+function flattenTasks(tasks: Task[], baseName = ''): Task[] {
   const base = baseName ? `${baseName} > ` : ''
 
-  if (task.type === 'suite') {
-    return task.tasks.flatMap(child => flattenTasks(child, `${base}${task.name}`))
-  }
-  else {
-    return [{
+  return tasks.flatMap(task => task.type === 'suite'
+    ? flattenTasks(task.tasks, `${base}${task.name}`)
+    : [{
       ...task,
       name: `${base}${task.name}`,
-    }]
-  }
+    }])
 }
 
 function escapeXML(value: any): string {
@@ -145,7 +142,7 @@ export class JUnitReporter implements Reporter {
 
     const transformed = files
       .map((file) => {
-        const tasks = file.tasks.flatMap(task => flattenTasks(task))
+        const tasks = flattenTasks(file.tasks)
 
         const stats = tasks.reduce((stats, task) => {
           return {
