@@ -2,7 +2,7 @@ import type {
   Plugin as PrettyFormatPlugin,
 } from 'pretty-format'
 import type { Any, Anything } from './integrations/chai/jest-asymmetric-matchers'
-import type { MatcherState, MatchersObject } from './integrations/chai/types'
+import type { MatcherState, MatchersObject, RawMatcherFn } from './integrations/chai/types'
 import type { Constructable, InlineConfig } from './types'
 
 type VitestInlineConfig = InlineConfig
@@ -128,5 +128,12 @@ declare global {
       resolves: Promisify<Assertion<T>>
       rejects: Promisify<Assertion<T>>
     }
+
+    // Helper type to allow getting assertion function from the raw matcher function
+    type ExpectExtend<T> = T extends RawMatcherFn<any, any, void>
+      ? () => void
+      : T extends RawMatcherFn<any, any, infer TE>
+        ? (expect: TE) => void
+        : never
   }
 }
