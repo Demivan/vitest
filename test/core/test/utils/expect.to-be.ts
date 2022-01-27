@@ -4,3 +4,11 @@ export const toBeOrNotToBe = (received: string) => {
     pass: received === 'To be, or not to be',
   }
 }
+
+declare global {
+  namespace Vi {
+    interface Assertion {
+      toBeOrNotToBe: ExpectExtend<typeof toBeOrNotToBe>
+    }
+  }
+}

@@ -4,3 +4,11 @@ export const toBeSquareOf = (received: number, expect: number) => {
     pass: received === expect * expect,
   }
 }
+
+declare global {
+  namespace Vi {
+    interface Assertion {
+      toBeSquareOf: ExpectExtend<typeof toBeSquareOf>
+    }
+  }
+}
